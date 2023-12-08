@@ -1,15 +1,7 @@
 import asyncio
-import io
-import os
-import sys
 import time
 from argparse import ArgumentParser, Namespace
-import socket
-
-from scapy.sendrecv import AsyncSniffer
-
 from protocol_on_port import *
-
 from scapy.all import sr1
 from scapy.layers.inet import TCP, IP
 
