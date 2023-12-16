@@ -101,7 +101,7 @@ class PortScaner:
             protocol_on_port = self.parse_protocol(port, main_argument.ip, socket.SOCK_STREAM)
 
         if main_argument.options['is_verbose']:
-            print(f"TCP {port} {time_ms} {protocol_on_port}")
+            print(f"TCP {port} {time_ms} ms {protocol_on_port}")
         else:
             print(f"TCP {port} {protocol_on_port}")
 
@@ -111,7 +111,9 @@ class PortScaner:
         timeout = main_argument.options['timeout']
         sock = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
         sock.settimeout(timeout)
-        sock.sendto(b'\xAA\xAA\x01\x00\x00\x01\x00\x00', (main_argument.ip, port) )
+        query = b'\xAA\xAA\x01\x00\x00\x01\x00\x00' + b'\x00\x00\x00\x00' + b'\x07' + b'example' \
+                + b'\x03' + b'com' + b'\x00' + b'\x00\x01' + b'\x00\x01'
+        sock.sendto(query, (main_argument.ip, port) )
         try:
             data, _ = sock.recvfrom(1024)
         except socket.timeout:
